@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Presensi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>Presensi Kelas</h2>
+
+  <input type="text" id="nama" placeholder="Nama">
+  <input type="text" id="nim" placeholder="NIM">
+
+  <p id="lokasi">📍 Lokasi: -</p>
+  <p id="waktu">⏰ Waktu: -</p>
+
+  <video id="video" autoplay></video>
+  <canvas id="canvas" style="display:none;"></canvas>
+
+  <img id="preview" style="width:100%; margin-top:10px; border-radius:10px; display:none;">
+<p id="infoFoto"></p>
+
+<button onclick="ambilFoto()">Ambil Foto</button>
+<button onclick="resetKamera()">Ambil Ulang</button>
+<button onclick="absen()">Tandai Hadir</button>
+
+  <p id="status"></p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
