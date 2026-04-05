@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#1b1b21",
+                    "tertiary-fixed": "#ffdbd0",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#bdc2ff",
+                    "surface-container": "#efecf5",
+                    "on-primary-container": "#8690ee",
+                    "on-secondary-fixed": "#151839",
+                    "on-tertiary-container": "#e17c5a",
+                    "outline-variant": "#c6c5d4",
+                    "inverse-surface": "#303036",
+                    "secondary-fixed-dim": "#c1c3ed",
+                    "tertiary-fixed-dim": "#ffb59d",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#2472c1",
+                    "primary-container": "#1a237e",
+                    "primary": "#2472c1",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#380b00",
+                    "on-secondary-fixed-variant": "#414467",
+                    "surface-dim": "#dbd9e1",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-surface": "#1b1b21",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#343d96",
+                    "background": "#f0f7ff",
+                    "on-secondary-container": "#575b7f",
+                    "surface-container-low": "#f5f2fb",
+                    "surface-container-high": "#eae7ef",
+                    "on-primary-fixed": "#000767",
+                    "on-error-container": "#93000a",
+                    "primary-fixed": "#e0e0ff",
+                    "secondary-fixed": "#e0e0ff",
+                    "on-surface-variant": "#454652",
+                    "secondary": "#585c80",
+                    "surface-variant": "#e4e1ea",
+                    "secondary-container": "#d2d4ff",
+                    "tertiary-container": "#5c1800",
+                    "inverse-on-surface": "#f2eff8",
+                    "primary-fixed-dim": "#bdc2ff",
+                    "on-tertiary-fixed": "#390c00",
+                    "outline": "#767683",
+                    "on-tertiary-fixed-variant": "#7b2e12",
+                    "surface-container-highest": "#e4e1ea",
+                    "surface-bright": "#fbf8ff",
+                    "surface": "#fbf8ff",
+                    "six-blue": "#2472c1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(8px);
+      }
+      .vibrant-gradient {
+        background: linear-gradient(135deg, #1a237e 0%, #2472c1 100%);
+      }
+      .location-glow {
+        box-shadow: 0 4px 15px -3px rgba(36, 114, 193, 0.1);
+      }
+      body {
+        min-height: 100dvh;
+      }
+    </style>
+</head>
+<body class="bg-blue-50/50 font-body text-on-background min-h-screen pb-28">
+<!-- TopAppBar Section -->
+<header class="fixed top-0 w-full z-50 bg-six-blue flex justify-between items-center px-6 py-4 shadow-lg">
+<div class="flex items-center gap-4">
+<img alt="SIX Logo" class="w-9 h-9 object-cover rounded-full shadow-sm" src="https://lh3.googleusercontent.com/aida/ADBb0uiKm-IQuU0-TNF7SbM_gTyRMaRoa6ruHsAAzwPnPfVr6SsUT6EK1kE5D6mIe1tT8LzjT5AioXpcvJr5O0dSHZ5MwqkMkZJWRXA8CauDnbUsnwKU8ruFBBg1sHQJtPf2m5OO24kqPPeX4Ta6pKb0oGeEk41-URTCBHkq1WPkA2Y9Sf01mdN8QM_-leqle4r_XVjlGE0FMJLDT1uoCNg9dp3UnFA7zLQgfFR1Gyl3mAa17Jxl4FL3F53DevbIl4VvOuGbQEU82sX18G8"/>
+<h1 class="font-headline font-extrabold text-white text-2xl tracking-tight">SIX</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/60 shadow-inner">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBd3NhT5MtJ6nOGUeKmVOsktOfeFFMGWERdJG_wbR1C6vgIntev1WES3J9uvdHsH9kzRJioyvr8QmwKSYQbCWhkrgtLc0j_bxHjiSeC02AXRHnGnJaAQXFnFxdD18A1QXRSkudvlMqSZoFfwE1QRyQciA_rmqXIgW7OxAadYmu3_6HaXxxBlRy1KbBZ_gNmcfpV2HbkW1BTx0Ru01h_rjfyYirJfrvfpZcbJOYFoGFF_efeDhAMa5ecxbSzA4arpG4KoUGmna2cPefi"/>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-lg mx-auto">
+<!-- Editorial Header -->
+<section class="mb-8">
+<span class="font-label text-[11px] uppercase tracking-widest text-primary font-bold mb-1 block">SISTEM INFORMASI AKADEMIK ITB</span>
+<h2 class="font-headline text-3xl font-extrabold tracking-tight text-primary uppercase">PRESENSI KELAS</h2>
+</section>
+<!-- Form Section -->
+<section class="space-y-4 mb-8">
+<div class="space-y-1">
+<label class="block font-label text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-1">Nama Mahasiswa</label>
+<div class="w-full bg-white rounded-xl px-4 py-3.5 font-headline font-semibold text-on-surface shadow-sm border border-slate-100">ABCDEFG</div>
+</div>
+<div class="space-y-1">
+<label class="block font-label text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-1">Nomor Induk Mahasiswa (NIM)</label>
+<div class="w-full bg-white rounded-xl px-4 py-3.5 font-body font-medium text-on-surface shadow-sm border border-slate-100">18225XXX</div>
+</div>
+</section>
+<!-- Camera Module -->
+<section class="relative mb-8">
+<div class="w-full aspect-[4/5] rounded-[2rem] overflow-hidden shadow-xl bg-neutral-900 relative">
+<img alt="Camera Preview" class="w-full h-full object-cover opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6QpH18TCPUhAi-sIOCmnzG39a-OwP5sETt_lG23uCTRhgpc2EOTTzlJLrW9qU6FxGmvX0kjbpIY7BO287a7eB7aUIyGGknJaOWw-bAfs9RrjhcXjOU8mqdPH6FL__-6Uslg0toYJxr1Fl_l6-mgsYlNWfXPuwgFf0joxhj4gCLmM7ya5PjLOJo-qy2vPKKwnUBC6QJQMT3S3XVsnM8LpQjhJ_NUAUQmnvUMuaOoxMoVpAi4BjZsBbhZ7eZgRZH6Eygc-Py4M--XTI"/>
+<!-- Camera Overlays -->
+<div class="absolute inset-0 pointer-events-none p-6 flex flex-col justify-between">
+<div class="glass-card self-start px-3 py-1.5 rounded-full flex items-center gap-2 border border-white/30">
+<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+<span class="text-[10px] font-black font-label uppercase tracking-wider text-slate-800">LIVE PREVIEW</span>
+</div>
+<div class="glass-card p-4 rounded-2xl border border-white/30 w-fit">
+<p class="font-label text-[10px] font-bold text-primary uppercase tracking-widest mb-1">Timestamp</p>
+<p class="font-body font-bold text-xs text-slate-900">12 Oct 2024 • 10:45:22 WIB</p>
+</div>
+</div>
+</div>
+<!-- Time Display -->
+<div class="mt-8 text-center">
+<p class="font-headline text-6xl font-extrabold tracking-tighter text-six-blue">10:45</p>
+<p class="font-label text-[11px] font-bold text-slate-400 uppercase tracking-[0.4em] mt-1">Current Session Time</p>
+</div>
+</section>
+<!-- Location Section -->
+<section class="mb-8">
+<div class="p-4 rounded-2xl bg-white border border-blue-50 location-glow flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-six-blue">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 0;">map</span>
+</div>
+<div>
+<p class="font-label text-[10px] font-bold text-slate-400 uppercase tracking-widest">Lokasi Perkuliahan</p>
+<p class="font-headline font-bold text-[15px] text-slate-900">GKU 2, Lantai 3 • Ruang 9653</p>
+</div>
+</div>
+</section>
+<!-- Primary Actions -->
+<section class="space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-2 bg-blue-50 text-six-blue font-headline font-bold py-4 rounded-2xl transition-transform active:scale-95 shadow-sm border border-blue-100">
+<span class="material-symbols-outlined text-xl">photo_camera</span>
+<span>Ambil Foto</span>
+</button>
+<button class="flex items-center justify-center gap-2 bg-white text-slate-500 font-headline font-bold py-4 rounded-2xl transition-transform active:scale-95 shadow-sm border border-slate-100">
+<span class="material-symbols-outlined text-xl">refresh</span>
+<span>Ambil Ulang</span>
+</button>
+</div>
+<button class="w-full vibrant-gradient text-white font-headline font-extrabold text-lg py-5 shadow-lg transition-all active:scale-95 flex items-center justify-center gap-3 rounded-full">
+<span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1;'>check_circle</span>
+<span>Tandai Hadir</span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar Section -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-end px-4 pb-6 pt-2 bg-white/90 backdrop-blur-xl z-50 rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.04)] border-t border-slate-100">
+<div class="flex flex-col items-center justify-center bg-blue-50 text-six-blue rounded-2xl px-6 py-2.5">
+<span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1;'>photo_camera</span>
+<span class="font-inter font-bold text-[10px] uppercase tracking-widest mt-1">Attendance</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400 px-6 py-2.5 transition-colors">
+<span class="material-symbols-outlined">history</span>
+<span class="font-inter font-medium text-[10px] uppercase tracking-widest mt-1">History</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400 px-6 py-2.5 transition-colors">
+<span class="material-symbols-outlined">person</span>
+<span class="font-inter font-medium text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</div>
+</nav>
+</body></html>
