@@ -22,7 +22,7 @@ let stream = null;
 // 📍 KOORDINAT KELAS (GANTI SESUAI LOKASI KAMU)
 const kelasLat = -6.929684430614102;
 const kelasLon = 107.7688228275042; 
-const radius = 0.000028;
+const radius = 0.00005;
 
 // =======================
 // 📍 Ambil lokasi (lebih akurat)
