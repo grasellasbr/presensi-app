@@ -1,11 +1,28 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBVaJbBqHrB9SpFJOKJKx4H9NF3luL49t8",
+  authDomain: "presensi-kelas-b7138.firebaseapp.com",
+  projectId: "presensi-kelas-b7138",
+  storageBucket: "presensi-kelas-b7138.firebasestorage.app",
+  messagingSenderId: "207480225579",
+  appId: "1:207480225579:web:c97a528b3bef45b03f4f6e",
+  measurementId: "G-7BNL5Z6CY1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 let lat = null, lon = null;
 let foto = "";
 let stream = null;
 
 // 📍 KOORDINAT KELAS (GANTI SESUAI LOKASI KAMU)
-const kelasLat = -6.9147;
-const kelasLon = 107.6098;
-const radius = 0.001;
+const kelasLat = -6.929684430614102;
+const kelasLon = 107.7688228275042; 
+const radius = 0.000028;
 
 // =======================
 // 📍 Ambil lokasi (lebih akurat)
@@ -169,22 +186,24 @@ async function absen() {
     waktu: new Date()
   };
 
-  try {
-    const res = await fetch("http://localhost:3000/absen", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
+try {
+  await addDoc(collection(db, "presensi"), data);
 
-    const result = await res.json();
+  document.getElementById("status").innerText =
+    "✅ Presensi berhasil!";
 
-    document.getElementById("status").innerText =
-      "✅ " + result.message;
-
-  } catch (err) {
-    document.getElementById("status").innerText =
-      "❌ Gagal kirim ke server!";
-  }
+} catch (err) {
+  document.getElementById("status").innerText =
+    "❌ Presensi gagal!";
 }
+
+await fetch("https://script.google.com/macros/s/AKfycbxVySx7NMBj8sgeQZbhr2bGMnwwPbuiMaK19d3V0-J_MT8kNTUWT9B9ySyYBuuDU4IX/exec", {
+  method: "POST",
+  body: JSON.stringify(data)
+});
+}
+
+
+window.ambilFoto = ambilFoto;
+window.resetKamera = resetKamera;
+window.absen = absen;
