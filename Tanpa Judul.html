@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIX - Presensi Kelas Interaktif</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --primary-blue: #32589f;
+            --header-blue: #3a68b7;
+            --bg-color: #f5f7fb;
+            --text-dark: #222;
+            --text-gray: #7a869a;
+            --white: #ffffff;
+            --border-radius-lg: 24px;
+            --border-radius-md: 12px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(50, 88, 159, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: #e0e5ec;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 414px;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow-x: hidden;
+            padding-bottom: 90px;
+        }
+
+        header {
+            background-color: var(--header-blue);
+            color: var(--white);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; }
+        .logo-icon {
+            width: 32px; height: 32px; background-color: white; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; color: var(--header-blue);
+        }
+
+        main { padding: 20px; }
+
+        .title-area { margin-bottom: 20px; }
+        .title-subtitle { font-size: 10px; font-weight: 700; color: var(--primary-blue); letter-spacing: 0.5px; }
+        .title-main { font-size: 24px; font-weight: 800; color: var(--primary-blue); }
+
+        .form-group { margin-bottom: 16px; }
+        .form-label { font-size: 10px; font-weight: 700; color: #555; margin-bottom: 6px; display: block; }
+        .form-input {
+            width: 100%; padding: 14px 16px; border: 1px solid #eee; border-radius: var(--border-radius-md);
+            background-color: var(--white); font-size: 14px; font-weight: 600; color: var(--text-dark);
+            box-shadow: var(--shadow-sm); outline: none;
+        }
+        .form-input:focus { border-color: var(--primary-blue); }
+
+        /* Camera Section */
+        .camera-container {
+            background-color: #000;
+            border-radius: var(--border-radius-lg);
+            height: 320px;
+            position: relative;
+            margin: 24px 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #video, #canvas-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #canvas-img { display: none; } /* Tersembunyi sampai foto diambil */
+
+        .badge {
+            position: absolute; top: 16px; left: 16px; z-index: 10;
+            background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(4px);
+            border-radius: 20px; padding: 6px 12px; font-size: 10px; font-weight: 700;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .dot { width: 6px; height: 6px; background-color: #e74c3c; border-radius: 50%; }
+
+        .timestamp-box {
+            position: absolute; bottom: 16px; left: 16px; z-index: 10;
+            background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(4px);
+            padding: 10px 14px; border-radius: 12px;
+        }
+        .timestamp-label { font-size: 8px; font-weight: 700; color: var(--primary-blue); }
+        .timestamp-value { font-size: 11px; font-weight: 700; color: #111; }
+
+        .time-display { text-align: center; margin-bottom: 24px; }
+        .time-main { font-size: 56px; font-weight: 800; color: var(--primary-blue); line-height: 1; }
+        .time-sub { font-size: 10px; font-weight: 700; color: var(--text-gray); letter-spacing: 2px; }
+
+        .location-card {
+            background-color: var(--white); border-radius: var(--border-radius-md);
+            padding: 12px 16px; display: flex; align-items: center; gap: 16px;
+            box-shadow: var(--shadow-sm); margin-bottom: 24px;
+        }
+        .loc-icon-wrapper {
+            background-color: #eef2fa; width: 40px; height: 40px; border-radius: 10px;
+            display: flex; justify-content: center; align-items: center; color: var(--primary-blue);
+        }
+        .loc-details { flex: 1; }
+        .loc-input {
+            width: 100%; border: none; font-size: 13px; font-weight: 700;
+            color: #222; outline: none; background: transparent;
+        }
+
+        .action-row { display: flex; gap: 12px; margin-bottom: 24px; }
+        .btn-half {
+            flex: 1; padding: 14px; border-radius: var(--border-radius-md);
+            font-size: 14px; font-weight: 600; display: flex; justify-content: center;
+            align-items: center; gap: 8px; cursor: pointer; border: none;
+        }
+        .btn-ambil-foto { background-color: #eef4ff; color: var(--primary-blue); border: 1px solid #d6e4ff; }
+        .btn-ambil-ulang { background-color: var(--white); color: var(--text-gray); box-shadow: var(--shadow-sm); }
+        
+        .btn-submit {
+            width: 100%; background: linear-gradient(135deg, #2b4c8a, #3867c4);
+            color: var(--white); padding: 18px; border-radius: 30px;
+            font-size: 16px; font-weight: 600; border: none; display: flex;
+            justify-content: center; align-items: center; gap: 10px; box-shadow: var(--shadow-md);
+        }
+
+        .bottom-nav {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background-color: var(--white); border-top-left-radius: var(--border-radius-lg);
+            border-top-right-radius: var(--border-radius-lg); display: flex;
+            justify-content: space-around; padding: 10px 10px 20px; box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-gray); text-decoration: none; }
+        .nav-item.active { color: var(--primary-blue); }
+        .nav-item span { font-size: 9px; font-weight: 700; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <div class="logo-area"><div class="logo-icon"><span class="material-symbols-outlined" style="font-size: 20px;">cyclone</span></div> SIX</div>
+            <div class="profile-avatar"><span class="material-symbols-outlined" style="color:white; font-size: 30px;">account_circle</span></div>
+        </header>
+
+        <main>
+            <div class="title-area">
+                <div class="title-subtitle">SISTEM INFORMASI AKADEMIK ITB</div>
+                <div class="title-main">PRESENSI KELAS</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">NAMA MAHASISWA</label>
+                <input type="text" class="form-input" placeholder="Masukkan Nama..." id="input-nama">
+            </div>
+            <div class="form-group">
+                <label class="form-label">NOMOR INDUK MAHASISWA (NIM)</label>
+                <input type="text" class="form-input" placeholder="Masukkan NIM..." id="input-nim">
+            </div>
+
+            <div class="camera-container">
+                <div class="badge" id="live-indicator">
+                    <div class="dot"></div> LIVE PREVIEW
+                </div>
+                
+                <video id="video" autoplay playsinline></video>
+                <canvas id="canvas" style="display:none;"></canvas>
+                <img id="canvas-img" alt="Captured Photo">
+
+                <div class="timestamp-box">
+                    <div class="timestamp-label">TIMESTAMP</div>
+                    <div class="timestamp-value" id="current-date-time">-- --- ---- • --:--:-- WIB</div>
+                </div>
+            </div>
+
+            <div class="time-display">
+                <div class="time-main" id="large-time">00:00</div>
+                <div class="time-sub">CURRENT SESSION TIME</div>
+            </div>
+
+            <div class="location-card">
+                <div class="loc-icon-wrapper"><span class="material-symbols-outlined">map</span></div>
+                <div class="loc-details">
+                    <label class="form-label" style="margin-bottom:0">LOKASI PERKULIAHAN</label>
+                    <input type="text" class="loc-input" value="GKU 2, Lantai 3 • Ruang 9653" id="input-lokasi">
+                </div>
+            </div>
+
+            <div class="action-row">
+                <button class="btn-half btn-ambil-foto" id="btn-snap">
+                    <span class="material-symbols-outlined">photo_camera</span> Ambil Foto
+                </button>
+                <button class="btn-half btn-ambil-ulang" id="btn-retake">
+                    <span class="material-symbols-outlined">refresh</span> Ambil Ulang
+                </button>
+            </div>
+
+            <button class="btn-submit" onclick="alert('Absensi Terkirim!')">
+                <span class="material-symbols-outlined">check_circle</span> Tandai Hadir
+            </button>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active"><span class="material-symbols-outlined">photo_camera</span><span>ATTENDANCE</span></a>
+            <a href="#" class="nav-item"><span class="material-symbols-outlined">history</span><span>HISTORY</span></a>
+            <a href="#" class="nav-item"><span class="material-symbols-outlined">person</span><span>PROFILE</span></a>
+        </nav>
+    </div>
+
+    <script>
+        // --- LOGIKA KAMERA ---
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const canvasImg = document.getElementById('canvas-img');
+        const btnSnap = document.getElementById('btn-snap');
+        const btnRetake = document.getElementById('btn-retake');
+        const liveIndicator = document.getElementById('live-indicator');
+
+        // Akses Kamera
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error("Error akses kamera: ", err);
+                alert("Mohon izinkan akses kamera untuk menggunakan fitur ini.");
+            }
+        }
+
+        // Ambil Foto
+        btnSnap.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const data = canvas.toDataURL('image/png');
+            canvasImg.src = data;
+            
+            // Tukar tampilan
+            video.style.display = 'none';
+            canvasImg.style.display = 'block';
+            liveIndicator.innerHTML = '<div class="dot" style="background:gray"></div> CAPTURED';
+        });
+
+        // Ambil Ulang
+        btnRetake.addEventListener('click', () => {
+            video.style.display = 'block';
+            canvasImg.style.display = 'none';
+            liveIndicator.innerHTML = '<div class="dot"></div> LIVE PREVIEW';
+        });
+
+        // --- LOGIKA JAM ---
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('large-time').textContent = `${hours}:${minutes}`;
+
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            document.getElementById('current-date-time').textContent = `${day} ${month} ${year} • ${hours}:${minutes}:${seconds} WIB`;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+        startCamera();
+    </script>
+</body>
+</html>
