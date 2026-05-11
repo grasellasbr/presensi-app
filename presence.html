@@ -111,10 +111,9 @@
                 </div>
             </div>
 
-            <!-- Tombol Tarik Data dari Spreadsheet -->
             <div class="sync-card">
                 <div class="sync-info" id="sync-status">Menunggu data tap hardware...</div>
-                <button class="btn-sync" onclick="fetchDataFromSheet()">
+                <button class="btn-sync" id="btn-sync">
                     <span class="material-symbols-outlined" style="font-size: 16px;">sync</span> Sync Data
                 </button>
             </div>
@@ -135,7 +134,7 @@
                 <div class="camera-overlay" id="cam-overlay">
                     <span class="material-symbols-outlined overlay-icon" id="overlay-icon">location_searching</span>
                     <div class="overlay-text" id="overlay-msg">Mengecek Lokasi Anda...<br>Kamera terkunci hingga lokasi diverifikasi.</div>
-                    <button class="btn-retry-loc" id="btn-retry-loc" style="display:none;" onclick="checkLocation()">Cek Ulang Lokasi</button>
+                    <button class="btn-retry-loc" id="btn-retry-loc" style="display:none;">Cek Ulang Lokasi</button>
                 </div>
 
                 <div class="badge" id="live-indicator"><div class="dot"></div> LIVE PREVIEW</div>
@@ -173,10 +172,31 @@
         </nav>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+        // 2. KONFIGURASI FIREBASE 
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnXLBzGQQI0UOTrREkmTcrtQePd3_tzNA",
+            authDomain: "presence-17254.firebaseapp.com",
+            projectId: "presence-17254",
+            storageBucket: "presence-17254.firebasestorage.app",
+            messagingSenderId: "340867429104",
+            appId: "1:340867429104:web:bd8c844bff3519e1bb4835"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        // -------------------------------------------------------
+
         const API_URL = 'https://script.google.com/a/macros/std.stei.itb.ac.id/s/AKfycbzFmb4OMvGzLMOkL3CccLwZN9gwB7FOos7PQiZVhbXtItWBBnBtjhrtoUKUx91mSfgyhw/exec';
         
         let dbMahasiswa = {}; 
+
+        let currentLat = null;
+        let currentLng = null;
+
         const selectNim = document.getElementById('input-nim');
         const inputNama = document.getElementById('input-nama');
         const syncStatus = document.getElementById('sync-status');
@@ -226,14 +246,17 @@
             }
         }
 
+        document.getElementById('btn-sync').addEventListener('click', fetchDataFromSheet);
+        // ------------------------------------------------------------------------------
+
         // Isi otomatis nama berdasarkan NIM yang ditarik dari Spreadsheet
         selectNim.addEventListener('change', function() {
             inputNama.value = dbMahasiswa[this.value] || '';
         });
 
         // LOGIKA GPS & KAMERA
-        const TARGET_LAT = -6.929684430614102; // Contoh latitude
-        const TARGET_LNG = 107.6107; // Contoh longitude
+        const TARGET_LAT = -6.929684430614102; 
+        const TARGET_LNG = 107.6107; 
         const ALLOWED_RADIUS_METERS = 0.00003; 
 
         let isLocationValid = false;
@@ -274,10 +297,12 @@
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    const userLat = position.coords.latitude;
-                    const userLng = position.coords.longitude;
-                    const distance = getDistance(userLat, userLng, TARGET_LAT, TARGET_LNG);
-                    inputLokasi.value = `Lat: ${userLat.toFixed(4)}, Lng: ${userLng.toFixed(4)}`;
+                    // --- EDIT DISINI: Menyimpan data ke variabel global yang baru dibuat ---
+                    currentLat = position.coords.latitude;
+                    currentLng = position.coords.longitude;
+                    const distance = getDistance(currentLat, currentLng, TARGET_LAT, TARGET_LNG);
+                    inputLokasi.value = `Lat: ${currentLat.toFixed(4)}, Lng: ${currentLng.toFixed(4)}`;
+                    // -----------------------------------------------------------------------
 
                     if (distance <= ALLOWED_RADIUS_METERS) {
                         isLocationValid = true;
@@ -294,6 +319,10 @@
                 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
         }
+
+        // --- EDIT DISINI: Menambahkan event listener pengganti atribut onclick HTML ---
+        btnRetryLoc.addEventListener('click', checkLocation);
+        // ------------------------------------------------------------------------------
 
         function showLocationError(msg, icon = "error") {
             overlayIcon.textContent = icon;
@@ -329,13 +358,35 @@
             liveIndicator.innerHTML = '<div class="dot"></div> LIVE PREVIEW'; canvasImg.src = ""; 
         });
 
-        document.getElementById('btn-submit').addEventListener('click', () => {
+        // --- EDIT DISINI: Logika submit ke Firebase ---
+        document.getElementById('btn-submit').addEventListener('click', async () => {
             if (Object.keys(dbMahasiswa).length === 0) { alert("Data tap hardware kosong! Pastikan tap kartu di pintu."); return; }
             if (selectNim.value === "") { alert("Pilih NIM Anda!"); return; }
             if (!isLocationValid) { alert("Lokasi Anda tidak valid!"); return; }
             if (canvasImg.src === "" || canvasImg.style.display === "none") { alert("Harap foto presensi!"); return; }
-            alert(`✅ ABSENSI TERSIMPAN!\nNama: ${inputNama.value}\nNIM: ${selectNim.value}`);
+            
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.disabled = true;
+
+            const dataToSave = {
+                nim: selectNim.value,
+                nama: inputNama.value,
+                lat: currentLat,
+                lon: currentLng,
+                foto: canvasImg.src,
+                waktu: new Date().toLocaleString()
+            };
+
+            try {
+                await addDoc(collection(db, "presensi_kelas"), dataToSave);
+                alert(`✅ ABSENSI TERSIMPAN KE FIREBASE!\nNama: ${inputNama.value}\nNIM: ${selectNim.value}`);
+            } catch (err) {
+                alert("❌ Gagal menyimpan data ke Firebase.");
+            }
+
+            btnSubmit.disabled = false;
         });
+        // ----------------------------------------------
 
         function updateTime() {
             const now = new Date();
