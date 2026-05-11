@@ -297,12 +297,10 @@
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    // --- EDIT DISINI: Menyimpan data ke variabel global yang baru dibuat ---
                     currentLat = position.coords.latitude;
                     currentLng = position.coords.longitude;
                     const distance = getDistance(currentLat, currentLng, TARGET_LAT, TARGET_LNG);
                     inputLokasi.value = `Lat: ${currentLat.toFixed(4)}, Lng: ${currentLng.toFixed(4)}`;
-                    // -----------------------------------------------------------------------
 
                     if (distance <= ALLOWED_RADIUS_METERS) {
                         isLocationValid = true;
@@ -320,9 +318,7 @@
             );
         }
 
-        // --- EDIT DISINI: Menambahkan event listener pengganti atribut onclick HTML ---
         btnRetryLoc.addEventListener('click', checkLocation);
-        // ------------------------------------------------------------------------------
 
         function showLocationError(msg, icon = "error") {
             overlayIcon.textContent = icon;
@@ -358,7 +354,9 @@
             liveIndicator.innerHTML = '<div class="dot"></div> LIVE PREVIEW'; canvasImg.src = ""; 
         });
 
-        // --- EDIT DISINI: Logika submit ke Firebase ---
+        // --- EDIT DISINI: Logika submit ke Firebase & Sheet Dosen ---
+        const URL_SHEET_DOSEN = 'https://script.google.com/macros/s/AKfycbxO-h64mOeSabrIpMEQ_eqH24nzRDHAbW2KtVVhC8lVTEE_5WmTy0n1ugtRJIbrFuyX/exec';
+
         document.getElementById('btn-submit').addEventListener('click', async () => {
             if (Object.keys(dbMahasiswa).length === 0) { alert("Data tap hardware kosong! Pastikan tap kartu di pintu."); return; }
             if (selectNim.value === "") { alert("Pilih NIM Anda!"); return; }
@@ -367,6 +365,7 @@
             
             const btnSubmit = document.getElementById('btn-submit');
             btnSubmit.disabled = true;
+            btnSubmit.innerHTML = "Menyimpan..."; // Feedback UI saat proses upload
 
             const dataToSave = {
                 nim: selectNim.value,
@@ -378,12 +377,22 @@
             };
 
             try {
+                // 1. Simpan ke Firebase Database
                 await addDoc(collection(db, "presensi_kelas"), dataToSave);
-                alert(`✅ ABSENSI TERSIMPAN KE FIREBASE!\nNama: ${inputNama.value}\nNIM: ${selectNim.value}`);
+                
+                // 2. Simpan ke Spreadsheet Dosen
+                await fetch(URL_SHEET_DOSEN, {
+                    method: "POST",
+                    body: JSON.stringify(dataToSave)
+                });
+
+                alert(`✅ ABSENSI BERHASIL!\nData tersimpan di Firebase & Spreadsheet Dosen.\nNama: ${inputNama.value}\nNIM: ${selectNim.value}`);
             } catch (err) {
-                alert("❌ Gagal menyimpan data ke Firebase.");
+                alert("❌ Gagal menyimpan data.");
+                console.error(err);
             }
 
+            btnSubmit.innerHTML = `<span class="material-symbols-outlined">check_circle</span> Tandai Hadir`;
             btnSubmit.disabled = false;
         });
         // ----------------------------------------------
