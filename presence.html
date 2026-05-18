@@ -190,7 +190,7 @@
         const db = getFirestore(app);
         // -------------------------------------------------------
 
-        const API_URL = 'https://script.google.com/a/macros/std.stei.itb.ac.id/s/AKfycbzFmb4OMvGzLMOkL3CccLwZN9gwB7FOos7PQiZVhbXtItWBBnBtjhrtoUKUx91mSfgyhw/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxUQF6q5FplCepntQaTEGsUO88d7snry-3nIYr9lBGainkqKDSt5VvOQpc5xqmk59wyIQ/exec';
         
         let dbMahasiswa = {}; 
 
@@ -203,8 +203,8 @@
 
         // --- FUNGSI TARIK DATA GOOGLE SPREADSHEET ---
         async function fetchDataFromSheet() {
-            if(API_URL === 'PASTE_URL_WEB_APP_GOOGLE_SCRIPT_DISINI') {
-                alert("PENTING: Masukkan URL Web App Google Script ke variabel API_URL di kodingan!");
+            if(API_URL != 'https://script.google.com/macros/s/AKfycbxUQF6q5FplCepntQaTEGsUO88d7snry-3nIYr9lBGainkqKDSt5VvOQpc5xqmk59wyIQ/exec') {
+                alert("PENTING: Masukkan Database Tap Kartu!");
                 return;
             }
 
@@ -255,9 +255,9 @@
         });
 
         // LOGIKA GPS & KAMERA
-        const TARGET_LAT = -6.929684430614102; 
-        const TARGET_LNG = 107.6107; 
-        const ALLOWED_RADIUS_METERS = 0.00003; 
+        const TARGET_LAT = -6.9297688;
+        const TARGET_LNG = 107.7688217; 
+        const ALLOWED_RADIUS_METERS = 10; 
 
         let isLocationValid = false;
 
